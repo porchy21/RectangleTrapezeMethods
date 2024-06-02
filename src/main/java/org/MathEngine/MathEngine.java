@@ -42,7 +42,7 @@ public class MathEngine {
     private double getResultFunc(String expr, double x) {
         try {
             ExprEvaluator util = new ExprEvaluator();
-                util.eval("x= "+x);
+            util.eval("x= "+x);
             return util.evalf(expr);
         } catch (SyntaxError e) {
             logger.error("Произошла ошибка {}", e);

@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: Main
+Main-Class: org.MathEngine.Main
+Multi-Release: true
 
