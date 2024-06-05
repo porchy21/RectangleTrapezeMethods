@@ -12,6 +12,8 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 //@SuppressWarnings("ALL")
@@ -66,8 +68,8 @@ public class GUI extends JFrame {
         runButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                double result,
-                        absoluteValue;
+                final double result;
+                final double[] absoluteValue = new double[1];
                 try {
                     //NumberFormatException
                     String expr = exprField.getText().replaceAll(" ", "");
@@ -81,10 +83,13 @@ public class GUI extends JFrame {
                     } else {
                         result = mathEngine.methodTrapeze(expr, a, b, step);
                     }
-                    absoluteValue = mathEngine.getAbsoluteValue(expr, a, b);
                     if (Double.isNaN(result)) {
                         throw new MathException();
                     }
+                    if (expr.length() <= 12) {
+                        absoluteValue[0] = mathEngine.getAbsoluteValue(expr, a, b);
+                    } else absoluteValue[0] = Double.NaN;
+
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(null, "Введены некорректные данные", "Error", JOptionPane.ERROR_MESSAGE);
                     logger.error("Произошла ошибка {}", e);
@@ -94,13 +99,13 @@ public class GUI extends JFrame {
                     logger.error("Произошла ошибка {}", e);
                     return;
                 }
-                if (Double.isNaN(absoluteValue))
+                if (Double.isNaN(absoluteValue[0]))
                     JOptionPane.showMessageDialog(null, String.format("Результат: %.4f%n", result), "Result", JOptionPane.INFORMATION_MESSAGE);
                 else
                     JOptionPane.showMessageDialog(null, String.format("Результат: %.4f%n" +
                                     "Абсолютная погрешность: %.3f%n" +
                                     "Относительная погрешность: %.3f%%",
-                            result, Math.abs(absoluteValue - result), Math.abs(absoluteValue - result) / Math.abs(absoluteValue) * 100), "Result", JOptionPane.INFORMATION_MESSAGE);
+                            result, Math.abs(absoluteValue[0] - result), Math.abs(absoluteValue[0] - result) / Math.abs(absoluteValue[0]) * 100), "Result", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         KeyListener decimalListener = new KeyAdapter() {

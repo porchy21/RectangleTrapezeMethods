@@ -7,6 +7,8 @@ import org.matheclipse.parser.client.SyntaxError;
 import org.matheclipse.parser.client.math.MathException;
 
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //@SuppressWarnings("ALL")
 public class MathEngine {
@@ -72,10 +74,8 @@ public class MathEngine {
         try {
             ExprEvaluator util = new ExprEvaluator();
             return util.evalf(String.format("Integrate(%s, {x,%s,%s})", expr, a, b));
-        } catch (SyntaxError e) {
-            logger.error("Произошла ошибка {}", e);
         } catch (MathException e) {
-            logger.error("Произошла ошибка {}", e);
+            logger.error("Произошла ошибка ", e);
         }
         return Double.NaN;
     }
